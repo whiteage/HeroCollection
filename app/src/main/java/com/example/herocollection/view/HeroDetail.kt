@@ -88,7 +88,7 @@ fun HeroDetail(heroId: String, viewModel: MainVM, navController: NavController) 
                 Icon(
                     imageVector = if (likebuttonState == true) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = "кнопка вайк",
-                    tint = if (likebuttonState== true) Color.Red else Color.Gray
+                    tint = if (likebuttonState== true) Color.Magenta else Color.Magenta
                 )
             }
 
