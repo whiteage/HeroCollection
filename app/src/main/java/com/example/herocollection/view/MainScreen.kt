@@ -79,7 +79,7 @@ fun MailScreen(viewModel: MainVM = viewModel(), navController: NavController) {
                     Text(modifier = Modifier.padding(horizontal = 40.dp), text = "Палагутин Андрей Дмитриевич")
                 IconButton(
                         onClick = {},
-                        modifier = Modifier,
+                        modifier = Modifier.padding(end = 20.dp),
                     ) {
                     Icon(Icons.Default.MoreVert, contentDescription = "кнопка заглушка")
                     }
