@@ -1,0 +1,43 @@
+import kotlin.Boolean;
+
+
+CREATE TABLE superhero (
+    id TEXT PRIMARY KEY,
+    nickname TEXT,
+    realName TEXT,
+    description TEXT,
+    imageUrl TEXT,
+    studio TEXT,
+    isFavorite INTEGER AS Boolean,
+    studioLogo TEXT
+);
+
+insertOrReplaceHero:
+INSERT OR REPLACE INTO superhero(id, nickname, realName, description, imageUrl, studio, isFavorite, studioLogo)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllHeroes:
+SELECT * FROM superhero
+ORDER BY isFavorite, nickname COLLATE NOCASE;
+
+selectHeroByStudio:
+SELECT * FROM superhero WHERE studio = ?
+ORDER BY isFavorite, nickname COLLATE NOCASE;
+
+selectHeroById:
+SELECT * FROM superhero WHERE id = ?
+ORDER BY isFavorite DESC, nickname COLLATE NOCASE;
+
+
+selectOthersByStudio:
+SELECT * FROM superhero WHERE studio != "DC Comics" AND studio != "Marvel Comics"
+ORDER BY isFavorite DESC, nickname COLLATE NOCASE;
+
+updateFavorite:
+UPDATE superhero
+SET isFavorite = ?
+WHERE id = ?;
+
+
+delALl:
+DELETE FROM superhero;
