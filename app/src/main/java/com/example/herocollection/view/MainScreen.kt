@@ -1,5 +1,6 @@
 package com.example.herocollection.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -49,12 +50,15 @@ fun MailScreen(viewModel: MainVM = viewModel(), navController: NavController) {
 
     val heroes by viewModel.superheroes.observeAsState(emptyList())
 
-    val expanded = remember { mutableStateOf(false) }
+    val expanded = remember {mutableStateOf(false)}
     val chosenVar = remember { mutableStateOf("All")}
 
+
     LaunchedEffect(Unit) {
+        Log.d("d", "лаунчед эффект")
         viewModel.loadHeroes()
     }
+
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -104,7 +108,7 @@ fun MailScreen(viewModel: MainVM = viewModel(), navController: NavController) {
                         text = { Text("All") },
 
                         onClick = {
-                            chosenVar.value  = "All"
+                            viewModel.setChosenFilter("All")
                             expanded.value = false
                             viewModel.loadHeroes()
 
@@ -112,11 +116,9 @@ fun MailScreen(viewModel: MainVM = viewModel(), navController: NavController) {
                     )
                     DropdownMenuItem(
                         text = { Text("Marvel") },
-
                         onClick = {
-                            chosenVar.value  = "Marvel Comics"
+                            chosenVar.value = "Marvel Comics"
                             expanded.value = false
-
                             viewModel.chosenStudio(chosenVar.value)
                         }
                     )
@@ -160,7 +162,10 @@ fun MailScreen(viewModel: MainVM = viewModel(), navController: NavController) {
                     }
 
                     LazyColumn(modifier = Modifier.background(Color.White)) {
-                        itemsIndexed(listOfCards) { _, item ->
+                        itemsIndexed(
+                            items = listOfCards,
+                            key = { _, item -> item.id } // Уникальный идентификатор
+                        ) { _, item ->
                             HeroCard(item = item, onClick = { navController.navigate("hero_details/${item.id}")  })
                         }
                     }

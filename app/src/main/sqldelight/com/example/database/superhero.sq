@@ -18,11 +18,11 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 selectAllHeroes:
 SELECT * FROM superhero
-ORDER BY isFavorite, nickname COLLATE NOCASE;
+ORDER BY isFavorite DESC, nickname COLLATE NOCASE;
 
 selectHeroByStudio:
 SELECT * FROM superhero WHERE studio = ?
-ORDER BY isFavorite, nickname COLLATE NOCASE;
+ORDER BY isFavorite DESC, nickname COLLATE NOCASE;
 
 selectHeroById:
 SELECT * FROM superhero WHERE id = ?

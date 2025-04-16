@@ -12,15 +12,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -43,7 +50,7 @@ fun HeroDetail(heroId: String, viewModel: MainVM, navController: NavController) 
 
     val hero by viewModel.superhero.observeAsState()
     val appearanceDto by viewModel.superheroAppearanceDto.observeAsState()
-
+    val likebuttonState by viewModel.likeB.observeAsState()
     hero?.let {
 
 
@@ -71,6 +78,19 @@ fun HeroDetail(heroId: String, viewModel: MainVM, navController: NavController) 
             ) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "backB")
             }
+            IconButton(
+                onClick = {
+                    viewModel.changeFavorite(it)
+
+                },
+                modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 20.dp).padding(end = 20.dp)
+            ) {
+                Icon(
+                    imageVector = if (likebuttonState == true) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = "кнопка вайк",
+                    tint = if (likebuttonState== true) Color.Red else Color.Gray
+                )
+            }
 
         }
         Box(modifier = Modifier.padding(20.dp).fillMaxSize().clip(shape = RoundedCornerShape(15.dp)).background(colorResource(
@@ -86,7 +106,6 @@ fun HeroDetail(heroId: String, viewModel: MainVM, navController: NavController) 
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,)
                     )
-
 
                 }
                 LazyColumn(

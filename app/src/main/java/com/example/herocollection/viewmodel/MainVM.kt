@@ -25,7 +25,11 @@ class MainVM(private val context: Context) : ViewModel() {
     private val _superheroAppearanceDto = MutableLiveData<AppearanceDto>()
     val superheroAppearanceDto : LiveData<AppearanceDto> = _superheroAppearanceDto
 
+    private val _likeB = MutableLiveData<Boolean>()
+    val likeB: LiveData<Boolean> = _likeB
 
+    private val _chosenFiltr = MutableLiveData<String>()
+    val chosenFiltr: LiveData<String> = _chosenFiltr
 
     private val parseHeroes = ParseHeroes(context)
 
@@ -50,6 +54,10 @@ class MainVM(private val context: Context) : ViewModel() {
         }
 
 
+    fun setChosenFilter(value: String) {
+        _chosenFiltr.postValue(value)
+    }
+
     fun chosenStudio(item: String) {
         val newHeroList =  parseHeroes.database.superheroQueries.selectHeroByStudio(item).executeAsList()
         _heroes.postValue(newHeroList)
@@ -57,6 +65,7 @@ class MainVM(private val context: Context) : ViewModel() {
 
     fun getHeroByID(id: String) {
         val hero = parseHeroes.database.superheroQueries.selectHeroById(id).executeAsOne()
+        _likeB.postValue(hero.isFavorite!!)
         _hero.postValue(hero)
         getFromDescString(hero)
     }
@@ -73,17 +82,17 @@ class MainVM(private val context: Context) : ViewModel() {
     }
 
 
-   /*  сбрасывает при выборе дополнительного фаворита
+
 
    fun changeFavorite(item: Superhero) {
         val newFavorite = !item.isFavorite!!
-
         parseHeroes.database.superheroQueries.updateFavorite(newFavorite, item.id)
         val updatedList = parseHeroes.database.superheroQueries.selectAllHeroes().executeAsList()
+        getHeroByID(item.id)
         _heroes.postValue(updatedList)
 
+    }
 
-    } */
 
     private suspend fun getHeroesfromDAtaBase() : List<Superhero>{
         return withContext(Dispatchers.IO) {
